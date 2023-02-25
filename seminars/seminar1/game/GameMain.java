@@ -29,8 +29,22 @@ public class GameMain {
          * * * * *
          */
 
-        RobotMap map1 = new RobotMap(5, 5);
+        RobotMap map1 = new RobotMap(5, 5); // создали карту
 
+        RobotMap.Robot robot1 = map1.createRobot(new Point(2, 3));
+        RobotMap.Robot robot2 = map1.createRobot(new Point(5, 5));
+        // при создании робота указываем точку, где он находится, для чего лучше создать
+        // отдельный класс Point
+        System.out.println(robot1); // [2, 3], [TOP]
+        System.out.println(robot2); // [2, 3], [TOP]
+        robot1.move();
+        System.out.println(robot1); // [1, 3], [TOP]
+        robot1.changeDirection(Direction.BOTTOM);
+        robot1.move();
+        robot1.move();
+        robot1.changeDirection(Direction.LEFT);
+        robot1.move();
+        System.out.println(robot1); // [3, 2], [LEFT]
     }
 
 }
