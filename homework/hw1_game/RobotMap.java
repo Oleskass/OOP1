@@ -78,17 +78,25 @@ public class RobotMap {
             this.direction = direction;
         }
 
-        public void move() {
-            Point newPoint = switch (direction) {
-                case TOP -> new Point(point.x() - 1, point.y());
-                case RIGHT -> new Point(point.x(), point.y() + 1);
-                case BOTTOM -> new Point(point.x() + 1, point.y());
-                case LEFT -> new Point(point.x(), point.y() - 1);
-            };
-            validatePoint(newPoint);
+        public void move(int step) {
+            for (int i = 0; i < step; i++) {
 
-            System.out.println("Робот переместился с " + point + " на " + newPoint);
-            this.point = newPoint;
+                Point newPoint = switch (direction) {
+                    case TOP -> new Point(point.x() - 1, point.y());
+                    case RIGHT -> new Point(point.x(), point.y() + 1);
+                    case BOTTOM -> new Point(point.x() + 1, point.y());
+                    case LEFT -> new Point(point.x(), point.y() - 1);
+                };
+                validatePoint(newPoint);
+
+                System.out.println("Робот переместился с " + point + " на " + newPoint);
+                this.point = newPoint;
+            }
+
+        }
+
+        public void move() {
+            move(1);
 
         }
 
