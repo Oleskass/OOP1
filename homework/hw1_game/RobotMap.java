@@ -4,21 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RobotMap {
+
     private final int n;
     private final int m;
+    private final int maxRobots;
 
     private final List<Robot> robots;
 
+    public RobotMap(int n, int m, int maxRobots) {
+        if (n > 0 && m > 0) {
+            this.n = n;
+            this.m = m;
+            this.maxRobots = maxRobots;
+            this.robots = new ArrayList<>();
+
+        } else {
+            throw new IllegalArgumentException("Размер карты задан неверно");
+        }
+    }
+
     public RobotMap(int n, int m) {
-        this.n = n;
-        this.m = m;
-        this.robots = new ArrayList<>();
+        this(n, m, 5);
     }
 
     public Robot createRobot(Point startPoint) {
         validatePoint(startPoint);
         Robot newRobot = new Robot(startPoint);
-        robots.add(newRobot);
+        if (robots.size() < maxRobots) {
+            robots.add(newRobot);
+        } else {
+            throw new IllegalArgumentException("Максимальное количество роботов на карте " + maxRobots);
+        }
+
         return newRobot;
 
     }
@@ -47,11 +64,13 @@ public class RobotMap {
 
     public class Robot {
 
+        public static final Direction DEFAULT_DIRECTION = Direction.TOP;
+
         private Direction direction;
         private Point point;
 
         public Robot(Point point) {
-            this.direction = Direction.TOP;
+            this.direction = DEFAULT_DIRECTION;
             this.point = point;
         }
 
