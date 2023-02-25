@@ -77,11 +77,14 @@ public class RobotMap {
          * в двух местах подряд выполняются два метода: validatePointIsCorrect и
          * validatePointIsFree объединим их в один метод validatePoint.
          */
+        public static final Direction DEFAULT_DIRECTION = Direction.TOP; // константа для направления по умолчанию
+
         private Direction direction;
         private Point point;
 
         public Robot(Point point) {
-            this.direction = Direction.TOP; // направление по умолчанию
+
+            this.direction = DEFAULT_DIRECTION; // направление по умолчанию
             this.point = point;
         }
 

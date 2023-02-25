@@ -13,10 +13,11 @@ public class Animal {
     // конструктор, который принимает только имя
     public Animal(String name) {
         this.name = name;
+        this.age = 1;
     }
 
     @Override
     public String toString() {
-        return name;
+        return name + ", " + age + " year(s)";
     }
 }
