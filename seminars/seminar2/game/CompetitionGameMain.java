@@ -50,10 +50,10 @@ public class CompetitionGameMain {
     // создадим массив препятствий и массив участников
     private static Obstacle[] createObstacles() {
         return new Obstacle[] {
-                new Road(100),
-                new Road(45),
+                new RoadObstacleAdapter(new Road(100)),
+                new RoadObstacleAdapter(new Road(45)),
+                new WallObstacleAdapter(new Wall(40)),
                 new SwimmingPool(20),
-                new Wall(40),
         };
     }
 

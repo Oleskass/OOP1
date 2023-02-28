@@ -1,15 +1,15 @@
 package seminars.seminar2.game;
 
-public class Wall implements Obstacle {
+public class Wall {
     private final int height;
 
     public Wall(int height) {
         this.height = height;
     }
 
-    @Override
-    public boolean pass(Participant participant1) {
-        return participant1.getJump() >= height;
+    // CanJump - это интерфейс, по которому можно взаимодействовать с Wall
+    public boolean pass(CanJump canJump) {
+        return canJump.getJump() >= height;
     }
 
 }
