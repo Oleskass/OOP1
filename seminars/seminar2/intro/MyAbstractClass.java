@@ -1,4 +1,4 @@
-package seminars.seminar2;
+package seminars.seminar2.intro;
 
 public abstract class MyAbstractClass {
 
