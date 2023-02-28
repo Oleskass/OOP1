@@ -4,9 +4,9 @@ public class CompetitionGameMain {
     public static void main(String[] args) {
         // Homework!!!
         // 0. Ознакомиться с кодом урока 2, подготовить вопросы к следующему уроку! V
-        // 1. Дописать адаптеры для бассейна
+        // 1. Дописать адаптеры для бассейна V
         // 2. *Придумать собственный тип препятствий и прикрутить его в проект по
-        // аналогии/
+        // аналогии/ V
 
         // 3. *Есть интерфейс RoundHole - описание круглое отверстия (имеет радиус)
         // double getRadius()
@@ -24,7 +24,8 @@ public class CompetitionGameMain {
 
                 boolean result = obstacle.pass(participant);
                 if (result) {
-                    System.out.println("Участник #" + participant.getName() + " преодолел препятствие");
+                    System.out.println(
+                            "Участник #" + participant.getName() + " преодолел препятствие");
                 } else {
                     System.out.println("Участник #" + participant.getName() + " НЕ преодолел препятствие");
                 }
@@ -39,14 +40,16 @@ public class CompetitionGameMain {
                 new RoadObstacleAdapter(new Road(45)),
                 new WallObstacleAdapter(new Wall(40)),
                 new SwimObstacleAdapter(new SwimmingPool(20)),
+                new HitTargetObstacleAdapter(new Target(8)),
         };
     }
 
     private static Participant[] createParticipants() {
         return new Participant[] {
-                new StandardParticipant("Igor", 50, 30, 20),
+                new StandardParticipant("Igor", 50, 30, 20, 9),
                 new Cat("Murzik", 60, 50),
-                new Cheater("Cheater")
+                new Cheater("Cheater"),
+                new StandardParticipant("Tolik", 50, 30, 20, 7),
         };
 
     }
