@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+// import java.util.concurrent.ThreadLocalRandom;
+// import java.util.stream.IntStream;
 
 public class IteratorMain {
 
@@ -15,11 +17,14 @@ public class IteratorMain {
             this.data = data;
         }
 
+        // прописали implements Iterable<Integer> и затем нужно реализовать интерфейс
+        // Iterable, который заключается в создании итератора
         @Override
         public Iterator<Integer> iterator() {
             return new IntStorageIterator(Arrays.copyOf(data, data.length));
         }
 
+        // в отдельном классе реализуем методы hasNext и next
         private static class IntStorageIterator implements Iterator<Integer> {
 
             private final int[] data;
@@ -36,6 +41,9 @@ public class IteratorMain {
 
             @Override
             public Integer next() {
+                // int next = data[cursor];
+                // cursor++;
+                // return next;
                 return data[cursor++];
             }
 
@@ -54,18 +62,42 @@ public class IteratorMain {
     public static void main(String[] args) {
         // iteratorDemo();
         // customIterator();
+
+        // =======
+        // List<Integer> randomIntegers = IntStream.generate(() ->
+        // ThreadLocalRandom.current().nextInt(20)).limit(20)
+        // .boxed().toList();
+
+        // System.out.println(randomIntegers);
+
+        // int sum = 0;
+        // Iterator<Integer> randomIntegersIterator = randomIntegers.iterator();
+        // while (randomIntegersIterator.hasNext()) {
+        // Integer x = randomIntegersIterator.next();
+        // sum += x;
+        // }
+        // // for (Integer integer : randomIntegers) {
+        // // System.out.println(integer);
+        // // }
+        // System.out.println("Sum = " + sum);
+        // ========
+
         List<Integer> integers = new ArrayList<>(List.of(1, 2, 3, 4, 5));
         Iterator<Integer> iterator = integers.iterator();
-        // while (iterator.hasNext()) {
-        // Integer next = iterator.next();
-        // if (next % 2 != 0) {
-        // iterator.remove();
-        // }
-        // }
-
+        while (iterator.hasNext()) {
+            Integer next = iterator.next();
+            if (next % 2 != 0) {
+                iterator.remove(); // эл-ты прям удалилилсь из коллекции
+            }
+        }
+        // тот же код, но короче (лямбда-выражение)
+        // removeIf принимает предикат, который удалит всё, что под этот предикат
+        // попадёт
         // integers.removeIf(x -> x % 2 != 0);
 
         System.out.println(integers);
+        iteratorDemo();
+        customIterator();
 
     }
 
@@ -75,7 +107,7 @@ public class IteratorMain {
 
         storage.iterator().forEachRemaining(it -> System.out.println(it));
         storage.iterator().forEachRemaining(System.out::println);
-        // for (int x: storage) {
+        // for (int x : storage) {
         // System.out.println(x);
         // }
     }
