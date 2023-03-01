@@ -1,6 +1,5 @@
 package homework.hw3_notebook;
 
-import java.security.spec.RSAMultiPrimePrivateCrtKeySpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,18 +23,21 @@ public class Notebook {
         this.price = price;
     }
 
-    public static void main(String[] args) {
-
-        List<Integer> givenRam = new ArrayList<>(List.of(2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 64));
-
-        List<Integer> ramList = new ArrayList<>();
-        List<Double> priceList = new ArrayList<>();
-
-        Random rand = new Random();
-        for (int i = 0; i < 10; i++) {
-            ramList.add(givenRam.get(rand.nextInt(givenRam.size())));
-        }
-
-        System.out.println(ramList);
+    @Override
+    public String toString() {
+        return String.format("Память: %d Цена: %.0f.\n", this.ram, this.price);
     }
+
+    public static Integer randRam() {
+        Random rand = new Random();
+        List<Integer> givenRam = new ArrayList<>(List.of(2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 64));
+        return givenRam.get(rand.nextInt(givenRam.size()));
+
+    }
+
+    public static Double randPrice() {
+        Random rand = new Random();
+        return rand.nextDouble(20000, 90000);
+    }
+
 }
