@@ -17,6 +17,7 @@ public class Notebook implements Comparable<Notebook> {
     // мб много)
     // 3. Отсортировать тремя способами стандартными средствами (Collections#sort
     // или List#sort)
+
     int ram;
     double price;
 
@@ -24,15 +25,6 @@ public class Notebook implements Comparable<Notebook> {
         this.ram = ram;
         this.price = price;
     }
-
-    // ?? итератор
-    // @Override
-    // public Iterator<String> iterator() {
-    // return new NotebookIterator(Arrays.copyOf(ram, price));
-    // }
-    // public static class NotebookIterator implements Iterator<String>{
-
-    // }
 
     @Override
     public int compareTo(Notebook o) {
@@ -68,9 +60,7 @@ public class Notebook implements Comparable<Notebook> {
     public static Integer randRam() {
         Random rand = new Random();
         List<Integer> givenRam = new ArrayList<>(List.of(2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 64));
-        return givenRam.get(rand.nextInt(3));
-        // return givenRam.get(rand.nextInt(givenRam.size()));
-
+        return givenRam.get(rand.nextInt(givenRam.size()));
     }
 
     public static Double randPrice() {

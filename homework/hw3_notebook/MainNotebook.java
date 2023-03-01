@@ -25,6 +25,5 @@ public class MainNotebook {
 
         Collections.sort(notebooks, Notebook.ramPriceComparator);
         System.out.println("\nУпорядочивание по памяти, затем по цене:\n" + notebooks);
-
     }
 }
