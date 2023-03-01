@@ -34,30 +34,30 @@ public class Notebook implements Comparable<Notebook> {
 
     // }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public int getRam() {
-        return ram;
-    }
-
     @Override
     public int compareTo(Notebook o) {
         return Double.compare(this.price, o.price);
     }
-    // @Override
-    // public int compareTo(Notebook o) {
-    // return (this.ram - o.ram);
-    // }
 
     public static Comparator<Notebook> ramComparator = new Comparator<Notebook>() {
 
         @Override
         public int compare(Notebook o1, Notebook o2) {
-            return (o1.getRam() - o2.getRam());
+            return (o1.ram - o2.ram);
         }
+    };
 
+    public static Comparator<Notebook> ramPriceComparator = new Comparator<Notebook>() {
+
+        @Override
+        public int compare(Notebook o1, Notebook o2) {
+            int res = (o1.ram - o2.ram);
+            if (res != 0) {
+                return res;
+            } else {
+                return Double.compare(o1.price, o2.price);
+            }
+        }
     };
 
     @Override
@@ -68,7 +68,8 @@ public class Notebook implements Comparable<Notebook> {
     public static Integer randRam() {
         Random rand = new Random();
         List<Integer> givenRam = new ArrayList<>(List.of(2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 64));
-        return givenRam.get(rand.nextInt(givenRam.size()));
+        return givenRam.get(rand.nextInt(3));
+        // return givenRam.get(rand.nextInt(givenRam.size()));
 
     }
 
