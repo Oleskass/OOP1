@@ -1,4 +1,4 @@
-package Ex006;
+package lectures.lecture4.ex6;
 
 import java.util.ArrayList;
 import java.util.List;

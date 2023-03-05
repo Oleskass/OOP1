@@ -1,4 +1,4 @@
-package Lesson_10.Ex004.V1;
+package lectures.lecture4.ex4.V1;
 
 public class Program {
     public static void main(String[] args) {
