@@ -1,5 +1,8 @@
 package seminars.seminar5;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 // import java.util.function.Consumer;
@@ -41,18 +44,37 @@ public class GameMain {
     }
 
     // часть кода с if выделим в отдельный компонент, который будет отвечать за
-    // обработку команд:
+    // обработку команд: (перместили из main код с if-ами)
+    // далее чтобы if не разрастался, на каждую команду (create, move, etc.) должен
+    // быть отдельный внутренний обработчик (отвечает только за одну команду!)
+    // а CommandMeneger будет управлять этими обработчиками.
+    // в acceptCommand добавили отдельный массив для аргументов наших команд, теперь
+    // наша команда всегда состоит из имени команды и массива аргументов, для этого
+    // создадим отдельный интерфейс (CommandHandler).
+    // создадим список комманд-хэндлеров в CommandManager - private final List<CommandHandler> handlers (и в констр-р пока пустой добавляем) и проходимся по каждому хэндлеру
+
     private static class CommandManager {
 
         private final RobotMap map1;
+        private final List<CommandHandler> handlers;
 
-        public CommandManager(RobotMap map1){
+
+        public CommandManager(RobotMap map1) {
             this.map1 = map1;
+            handlers = new ArrayList<>();
         }
 
         public void acceptCommand(String command) {
-            String[] commandArgs = command.split(" ");
-            String commandName = commandArgs[0];
+            String[] split = command.split(" ");
+            String commandName = split[0];
+            String[] commandArgs = Arrays.copyOfRange(split, 1, split.length);
+
+            for (CommandHandler handler : handlers) {
+                if(commandName.equals(handler.name())){
+                    handler.handle(commandArgs);
+                }
+            }
+
             try {
                 if ("create".equals(commandName)) {
                     // создаём робота
@@ -66,7 +88,7 @@ public class GameMain {
                     doMove(map1, commandArgs);
                 } else if ("exit".equals(commandName)) {
                     // завершаем программу
-                    //break; - теперь не работает
+                    // break; - теперь не работает
                     System.exit(0);
                 } else {
                     // команда не найдена
@@ -79,9 +101,14 @@ public class GameMain {
         }
     }
 
+    private interface CommandHandler {
+        String name();
+        void handle(String[] args);
+    }
+
     private static void doCreate(RobotMap map, String[] args) {
-        int x = Integer.parseInt(args[1]);
-        int y = Integer.parseInt(args[2]);
+        int x = Integer.parseInt(args[0]);
+        int y = Integer.parseInt(args[1]);
         RobotMap.Robot robot1 = map.createRobot(new Point(x, y));
         System.out.println("Робот" + robot1 + " успешно создан");
     }
@@ -102,7 +129,7 @@ public class GameMain {
     }
 
     public static void doMove(RobotMap map, String[] args) {
-        Long robotId = Long.parseLong(args[1]);
+        Long robotId = Long.parseLong(args[0]);
         Optional<RobotMap.Robot> robot = map.getById(robotId);
 
         // свернули нижний код до следующего:
