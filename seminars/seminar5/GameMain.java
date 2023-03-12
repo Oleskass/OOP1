@@ -66,7 +66,8 @@ public class GameMain {
                     doMove(map1, commandArgs);
                 } else if ("exit".equals(commandName)) {
                     // завершаем программу
-                    break;
+                    //break; - теперь не работает
+                    System.exit(0);
                 } else {
                     // команда не найдена
                     System.out.println("Команда не найдена");
