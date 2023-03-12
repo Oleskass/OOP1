@@ -2,6 +2,7 @@ package seminars.seminar5;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class RobotMap {
@@ -36,13 +37,13 @@ public class RobotMap {
         }
     }
 
-    public Robot getById(Long id) {
+    public Optional<Robot> getById(Long id) {
         for (Robot robot : robots) {
             if (id.equals(robot.id)){
-                return robot;
+                return Optional.of(robot);
             }
         }
-        return null;
+        return Optional.empty();
         
     }
 

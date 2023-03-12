@@ -1,8 +1,8 @@
 package seminars.seminar5;
 
+import java.util.Optional;
 import java.util.Scanner;
 // import java.util.function.Consumer;
-
 // import seminars.seminar5.RobotMap.Robot;
 
 public class GameMain {
@@ -20,6 +20,7 @@ public class GameMain {
         final RobotMap map1 = new RobotMap(n, m);
         System.out.println("Карта успешно создана");
 
+        final CommandManager manager = new CommandManager();
         while (true) {
             System.out.println(
                     """
@@ -36,7 +37,7 @@ public class GameMain {
             String command = iScanner.nextLine();
             String[] commandArgs = command.split(" ");
             String commandName = commandArgs[0];
-
+try {
             if ("create".equals(commandName)) {
                 // создаём робота
                 doCreate(map1, commandArgs);
@@ -52,7 +53,18 @@ public class GameMain {
                 break;
             } else {
                 // команда не найдена
+                System.out.println("Команда не найдена");
             }
+        } catch (Exception e) {
+            System.err.println("Во время обработки команды \"" + commandName + "\" произошла ошибка: " + e.getMessage());
+        }
+        }
+    }
+
+    // часть кода с if выделим в отдельный компонент, который будет отвечать за обработку команд:
+    private static class CommandManager{
+        public void acceptCommand(String command){
+
         }
     }
 
@@ -80,11 +92,32 @@ public class GameMain {
 
     public static void doMove(RobotMap map, String[] args) {
         Long robotId = Long.parseLong(args[1]);
-        RobotMap.Robot robot = map.getById(robotId);
-        if (robot != null){
-            robot.move();
-        } else {
-            System.out.println("Робот с id: " + robotId + " не найден");
-        }
+        Optional<RobotMap.Robot> robot = map.getById(robotId);
+
+        // свернули нижний код до следующего:
+        robot.ifPresentOrElse(RobotMap.Robot::move, () -> System.out.println("Робот с id: " + robotId + " не найден"));
+            } // если есть робот, то код до стрелки, если нет, то код после стрелки
+
+        // // развёрнутый вариант написания с Optional
+        // robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
+        // // если есть робот это сработает
+        // @Override
+        // public void accept(RobotMap.Robot robot) {
+        // robot.move();
+        // }
+        // }, new Runnable() {
+        // // runnable это интерфейс
+        // // если нет робота, то этот код сработает
+        // @Override
+        // public void run() {
+        // System.out.println("Робот с id: " + robotId + " не найден");
+        // }
+        // });
+
+        // // код с null, до Optional
+        // if (robot != null){
+        // robot.move();
+        // } else {
+        // System.out.println("Робот с id: " + robotId + " не найден");
+        // }
     }
-}
