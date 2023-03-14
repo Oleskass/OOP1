@@ -11,7 +11,6 @@ public class Point {
         this.y = y;
     }
 
-    // точки можно будет посомтреть через эти геттеры
     public int x() {
         return x;
     }
@@ -25,14 +24,14 @@ public class Point {
         return "(" + x + ", " + y + ")";
     }
 
-    @Override // нужно сравнить по полям и затем переопрделеить хеш-код
+    @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
-            return false; // если классы не равны, возвращает false
+            return false;
         Point point = (Point) o;
-        return x == point.x && y == point.y; // сравниваем по координатам
+        return x == point.x && y == point.y;
     }
 
     @Override

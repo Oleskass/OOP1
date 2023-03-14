@@ -6,7 +6,7 @@ public enum Direction {
     public static Direction ofString(String string) {
         Direction[] values = values();
         for (Direction value : values) {
-            if (string.equals(value.name())) { // name возвращает н/р TOP как строку
+            if (string.equals(value.name())) { // name возвращает TOP и тп как строку
                 return value;
             }
         }

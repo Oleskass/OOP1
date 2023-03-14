@@ -9,8 +9,7 @@ public class RobotMap {
     private final int n;
     private final int m;
 
-    private final List<Robot> robots; // final - внутреннее состояние списка может
-    // меняться, а ссылка на переменную роботов не может меняться
+    private final List<Robot> robots;
 
     public RobotMap(int n, int m) {
         this.n = n;
@@ -18,20 +17,12 @@ public class RobotMap {
         this.robots = new ArrayList<>();
     }
 
-    /*
-     * Все возможности робота будут описаны внутри класса Robot.
-     * Так как робот не имеет смысла без карты, создадим внутренний класс - класс
-     * внутри другого класса. Также создадим метод для создания робота
-     */
-
     public Robot createRobot(Point startPoint) {
         validatePoint(startPoint);
         Robot newRobot = new Robot(startPoint);
         robots.add(newRobot);
         return newRobot;
     }
-
-    
 
     public void acceptRobots(Consumer<Robot> robotAcceptor) {
         for (Robot robot : robots) {
@@ -46,7 +37,6 @@ public class RobotMap {
             }
         }
         return Optional.empty();
-
     }
 
     private void validatePoint(Point point) {
@@ -58,27 +48,20 @@ public class RobotMap {
         if (point.x() < 0 || point.x() > n || point.y() < 0 || point.y() > m) {
             throw new IllegalStateException("Некорректное значение точки");
         }
-
     }
 
     private void validatePointIsFree(Point point) {
-        // нужно пройтись по всем роботам на этой карте и сравнить их положение
-        // метод equals необходимо переопределить (в классе Point)
         for (Robot robot : robots) {
             if (robot.point.equals(point)) {
                 throw new IllegalStateException("Точка " + point + " занята.");
             }
-
         }
-
     }
 
     public class Robot {
 
-        public static final Direction DEFAULT_DIRECTION = Direction.TOP; // константа для направления по умолчанию
+        public static final Direction DEFAULT_DIRECTION = Direction.TOP;
 
-        // id робота добавили на сем5 (также в конструктор и в метод toString)
-        // static значит, что переменная общая на все объекты, которые создаются
         private static Long idCounter = 1L;
         private final Long id;
         private Direction direction;
@@ -103,19 +86,15 @@ public class RobotMap {
             };
             validatePoint(newPoint);
             System.out.println("Робот переместился с " + point + " на " + newPoint);
-            this.point = newPoint; // если точка валидная, то обновим её новым значением
-
+            this.point = newPoint;
         }
 
         public void deleteRobot(Long id) {
-            // validatePoint(startPoint);
-            // Robot = new Robot(startPoint);
             for (Robot robot : robots) {
-                if (id.equals(robot.id)) {
-                    robots.remove(id);
+                if (robot.id.equals(this.id)) {
+                    robots.remove(robot);
                 }
             }
-            ;
         }
 
         @Override
