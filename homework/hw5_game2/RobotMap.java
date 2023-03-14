@@ -31,7 +31,9 @@ public class RobotMap {
         return newRobot;
     }
 
-    public void acceptRobots(Consumer<Robot> robotAcceptor){
+    
+
+    public void acceptRobots(Consumer<Robot> robotAcceptor) {
         for (Robot robot : robots) {
             robotAcceptor.accept(robot);
         }
@@ -39,12 +41,12 @@ public class RobotMap {
 
     public Optional<Robot> getById(Long id) {
         for (Robot robot : robots) {
-            if (id.equals(robot.id)){
+            if (id.equals(robot.id)) {
                 return Optional.of(robot);
             }
         }
         return Optional.empty();
-        
+
     }
 
     private void validatePoint(Point point) {
@@ -72,7 +74,7 @@ public class RobotMap {
     }
 
     public class Robot {
-        
+
         public static final Direction DEFAULT_DIRECTION = Direction.TOP; // константа для направления по умолчанию
 
         // id робота добавили на сем5 (также в конструктор и в метод toString)
@@ -103,6 +105,17 @@ public class RobotMap {
             System.out.println("Робот переместился с " + point + " на " + newPoint);
             this.point = newPoint; // если точка валидная, то обновим её новым значением
 
+        }
+
+        public void deleteRobot(Long id) {
+            // validatePoint(startPoint);
+            // Robot = new Robot(startPoint);
+            for (Robot robot : robots) {
+                if (id.equals(robot.id)) {
+                    robots.remove(id);
+                }
+            }
+            ;
         }
 
         @Override

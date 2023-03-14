@@ -14,7 +14,7 @@ public class GameMain {
     public static void main(String[] args) {
         Scanner iScanner = new Scanner(System.in);
 
-        // TODO: приветствие
+        System.out.println("Добро пожаловать в игру!");
 
         System.out.println("Введите размер карты:");
         int n = iScanner.nextInt();
@@ -28,6 +28,7 @@ public class GameMain {
         while (true) {
             System.out.println(
                     """
+                                * * *
                             Доступные действия:
                             1. Для создания робота введите create x y, где x и y - координаты для нового робота
                             2. Для вывода списка всех созданных роботов, введите list
@@ -35,7 +36,7 @@ public class GameMain {
                             4. Для изменения направления введите changedir id DIRECTION, где id - идентификатор робота, DIRECTION - одно из значений {TOP, RIGHT, BOTTOM, LEFT}
                             5. Для удаления робота введите delete id, где id - идентификатор робота
                             6. Для выхода напишите exit
-                            ... список будет пополняться
+                            * * *
                                 """);
 
             String command = iScanner.nextLine();
@@ -78,6 +79,8 @@ public class GameMain {
             initListCommandHandler();
             initMoveCommandHandler();
             initChangeDirCommandHandler();
+            initDeleteCommandHandler();
+            initExitCommandHandler();
         }
 
         private void initCreateCommandHandler() {
@@ -136,7 +139,6 @@ public class GameMain {
             });
         }
 
-        // changedir id DIRECTION
         private void initChangeDirCommandHandler() {
             handlers.add(new CommandHandler() {
                 @Override
@@ -150,16 +152,49 @@ public class GameMain {
                 public void handle(String[] args) {
                     Long robotId = Long.parseLong(args[0]);
                     Optional<RobotMap.Robot> robot = map1.getById(robotId);
-                    Optional<Direction> direction = Direction.ofString(args[1]);
+                    Direction direction = Direction.ofString(args[1]);
 
                     robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
                         // если есть робот это сработает
                         @Override
                         public void accept(RobotMap.Robot robot) {
                             robot.changeDirection(direction);
+                            System.out.println("Робот с id: " + robotId + " изменил своё направление");
                         }
                     }, new Runnable() {
-                        // runnable это интерфейс
+                        // если нет робота, то этот код сработает
+                        @Override
+                        public void run() {
+                            System.out.println("Робот с id: " + robotId + " не найден");
+                        }
+                    });
+                }
+            });
+        }
+
+        // delete id
+        private void initDeleteCommandHandler() {
+            handlers.add(new CommandHandler() {
+                @Override
+                // наименование команды
+                public String name() {
+                    return "delete";
+                }
+
+                @Override
+                // метод команды delete
+                public void handle(String[] args) {
+                    Long robotId = Long.parseLong(args[0]);
+                    Optional<RobotMap.Robot> robot = map1.getById(robotId);
+
+                    robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
+                        // если есть робот это сработает
+                        @Override
+                        public void accept(RobotMap.Robot robot) {
+                            robot.deleteRobot(robotId);
+                            System.out.println("Робот с id: " + robotId + " удалён");
+                        }
+                    }, new Runnable() {
                         // если нет робота, то этот код сработает
                         @Override
                         public void run() {
@@ -167,30 +202,29 @@ public class GameMain {
                         }
                     });
 
-                    // robot.ifPresentOrElse(RobotMap.Robot::changeDirection(Direction.direction),
-                    // () -> System.out.println("Робот с id: " + robotId + " не найден"));
+                    // robot.ifPresentOrElse(RobotMap.Robot::deleteRobot(robotId),
+                    // () -> System.out.println("Робот с id: " + robotId + " удалён"));
+
                 }
             });
-            // // свернули нижний код до следующего:
-            // robot.ifPresentOrElse(RobotMap.Robot::move, () -> System.out.println("Робот с
-            // id: " + robotId + " не найден"));
-            // } // если есть робот, то код до стрелки, если нет, то код после стрелки
+        }
 
-            // // // развёрнутый вариант написания с Optional
-            // // robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
-            // // // если есть робот это сработает
-            // // @Override
-            // // public void accept(RobotMap.Robot robot) {
-            // // robot.move();
-            // // }
-            // // }, new Runnable() {
-            // // // runnable это интерфейс
-            // // // если нет робота, то этот код сработает
-            // // @Override
-            // // public void run() {
-            // // System.out.println("Робот с id: " + robotId + " не найден");
-            // // }
-            // // });
+        private void initExitCommandHandler() {
+            handlers.add(new CommandHandler() {
+                @Override
+                // наименование команды
+                public String name() {
+                    return "exit";
+                }
+
+                @Override
+                // метод команды exit
+                public void handle(String[] args) {
+                    System.out.println("Всего доброго!");
+                    System.exit(0);
+
+                }
+            });
         }
 
         public void acceptCommand(String command) {
